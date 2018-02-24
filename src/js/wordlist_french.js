@@ -204,4 +204,5 @@ WORDLISTS["french"] = [
 "violon", "vipère", "virement", "virtuose", "virus", "visage", "viseur", "vision", "visqueux", "visuel",
 "vital", "vitesse", "viticole", "vitrine", "vivace", "vivipare", "vocation", "voguer", "voile", "voisin",
 "voiture", "volaille", "volcan", "voltiger", "volume", "vorace", "vortex", "voter", "vouloir", "voyage",
-"voyelle", "wagon", "xénon", "yacht", "zèbre", "zénith", "zeste", "zoologie"]
+"voyelle", "wagon", "xénon", "yacht", "zèbre", "zénith", "zeste", "zoologie"];
+

@@ -56,3 +56,5 @@ bitcoinjs.bitcoin.networks.litecoin.p2wpkhInP2sh = {
 };
 
 })();
+
+

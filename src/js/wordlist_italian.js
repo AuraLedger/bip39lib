@@ -204,4 +204,5 @@ WORDLISTS["italian"] = [
 "viscoso", "visione", "vispo", "vissuto", "visura", "vita", "vitello", "vittima", "vivanda", "vivido",
 "viziare", "voce", "voga", "volatile", "volere", "volpe", "voragine", "vulcano", "zampogna", "zanna",
 "zappato", "zattera", "zavorra", "zefiro", "zelante", "zelo", "zenzero", "zerbino", "zibetto", "zinco",
-"zircone", "zitto", "zolla", "zotico", "zucchero", "zufolo", "zulu", "zuppa"]
+"zircone", "zitto", "zolla", "zotico", "zucchero", "zufolo", "zulu", "zuppa"];
+

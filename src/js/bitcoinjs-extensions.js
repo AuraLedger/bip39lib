@@ -328,3 +328,5 @@ bitcoinjs.bitcoin.networks.komodo = {
   scriptHash: 0x55,
   wif: 0xbc
 };
+
+

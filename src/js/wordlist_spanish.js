@@ -204,4 +204,5 @@ WORDLISTS["spanish"] = [
 "viral", "virgo", "virtud", "visor", "víspera", "vista", "vitamina", "viudo", "vivaz", "vivero",
 "vivir", "vivo", "volcán", "volumen", "volver", "voraz", "votar", "voto", "voz", "vuelo",
 "vulgar", "yacer", "yate", "yegua", "yema", "yerno", "yeso", "yodo", "yoga", "yogur",
-"zafiro", "zanja", "zapato", "zarza", "zona", "zorro", "zumo", "zurdo"]
+"zafiro", "zanja", "zapato", "zarza", "zona", "zorro", "zumo", "zurdo"];
+

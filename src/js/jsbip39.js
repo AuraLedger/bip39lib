@@ -27,6 +27,7 @@
  */
 
 var Mnemonic = function(language) {
+    if (typeof language === 'string' || language instanceof String){} else {return;}
 
     var PBKDF2_ROUNDS = 2048;
     var RADIX = 2048;
@@ -221,4 +222,8 @@ var Mnemonic = function(language) {
 
     init();
 
-}
+};
+
+
+
+
