@@ -1,8 +1,8 @@
 (function() {
 
   window.bip39js = {
-    getNetworks: getNetworks,
-    setNetIndex: setNetIndex,
+    getNetworkDict: getNetworkDict,
+    setActiveNetwork: setActiveNetwork,
     generateRandomPhrase: generateRandomPhrase,
     calcBip32RootKeyFromSeed: calcBip32RootKeyFromSeed,
     calcBip32ExtendedKey: calcBip32ExtendedKey,
@@ -11,6 +11,8 @@
     getBip44Info: getBip44Info,
     deriveAddress: deriveAddress,
     setMnemonicLanguage: setMnemonicLanguage,
+    findDerivationPathErrors: findDerivationPathErrors,
+    findPhraseErrors: findPhraseErrors
   };
 
   // mnemonics is populated as required by getLanguage
@@ -21,14 +23,19 @@
   var bip32ExtendedKey = null;
   var network = bitcoinjs.bitcoin.networks.bitcoin;
   var hdCoin = 0;
-  var netIndex = 0;
+  var networkDict = {};
+  var activeNetwork;
 
-  function setNetIndex(ind) {
-    netIndex = ind;
+  function setActiveNetwork(netw) {
+    activeNetwork = netw;
   }
 
-  function getNetworks() {
-    return networks; 
+  function networkHasSegwit() {
+    return activeNetwork.segwitAvailable;
+  }
+
+  function getNetworkDict() {
+    return networkDict;
   }
 
   var litecoinUseLtub = true;
@@ -54,6 +61,7 @@
   function calcBip32RootKeyFromSeed(phrase, passphrase) {
     seed = mnemonic.toSeed(phrase, passphrase);
     bip32RootKey = bitcoinjs.bitcoin.HDNode.fromSeedHex(seed, network);
+    return bip32RootKey;
   }
 
   function calcBip32RootKeyFromBase58(rootKeyBase58) {
@@ -87,6 +95,7 @@
         extendedKey = extendedKey.derive(index);
       }
     }
+    bip32ExtendedKey = extendedKey;
     return extendedKey
   }
 
@@ -114,7 +123,7 @@
     // Check each word
     for (var i=0; i<words.length; i++) {
       var word = words[i];
-      var language = getLanguage();
+      var language = getLanguage(phrase);
       if (WORDLISTS[language].indexOf(word) == -1) {
         console.log("Finding closest match to " + word);
         var nearestWord = findNearestWord(word);
@@ -142,7 +151,7 @@
 
   function getBip44DerivationPath(purpose, coin, account, change) {
     purpose = parseIntNoNaN(purpose, 44);
-    coin = parseIntNoNaN(coin, 0);
+    coin = parseIntNoNaN(coin, hdCoin);
     account = parseIntNoNaN(account, 0);
     change = parseIntNoNaN(change, 0);
     var path = "m/";
@@ -257,12 +266,12 @@
     }
     // get pubkey
     var pubkey = keyPair.getPublicKeyBuffer().toString('hex');
-    var indexText = getDerivationPath() + "/" + index;
+    var indexText = getBip44DerivationPath() + "/" + index;
     if (useHardenedAddresses) {
       indexText = indexText + "'";
     }
     // Ethereum values are different
-    if (networks[netIndex].ether) {
+    if (activeNetwork.ether) {
       var privKeyBuffer = keyPair.d.toBuffer(32);
       privkey = privKeyBuffer.toString('hex');
       var addressBuffer = ethUtil.privateToAddress(privKeyBuffer);
@@ -273,7 +282,7 @@
       pubkey = ethUtil.addHexPrefix(pubkey);
     }
     // Ripple values are different
-    if (networks[netIndex].name == "XRP - Ripple") {
+    if (activeNetwork.name == "XRP - Ripple") {
       privkey = convertRipplePriv(privkey);
       address = convertRippleAdrr(address);
     }
@@ -333,10 +342,10 @@
     return closestWord;
   }
 
-  function getLanguage() {
+  function getLanguage(phrase) {
     var defaultLanguage = "english";
     // Try to get from existing phrase
-    var language = getLanguageFromPhrase();
+    var language = getLanguageFromPhrase(phrase);
     // Try to get from url if not from phrase
     if (language.length == 0) {
       language = getLanguageFromUrl();
@@ -351,7 +360,7 @@
   function getLanguageFromPhrase(phrase) {
     // Check if how many words from existing phrase match a language.
     var language = "";
-    if (phrase.length > 0) {
+    if (phrase && phrase.length > 0) {
       var words = phraseToWordArray(phrase);
       var languageMatches = {};
       for (l in WORDLISTS) {
@@ -606,6 +615,24 @@
       },
     },
     {
+      name: "ROP - Ropsten",
+      segwitAvailable: false,
+      ether: true,  
+      onSelect: function() {
+        network = bitcoinjs.bitcoin.networks.bitcoin;
+        setHdCoin(3848736);
+      },
+    },
+    {
+      name: "RNK - Rinkeby",
+      segwitAvailable: false,
+      ether: true,  
+      onSelect: function() {
+        network = bitcoinjs.bitcoin.networks.bitcoin;
+        setHdCoin(3848737);
+      },
+    },
+    {
       name: "EXP - Expanse",
       segwitAvailable: false,
       ether: true,  
@@ -840,5 +867,8 @@
       },
     }
   ];
+
+  for(var networkIndexIterator = 0; networkIndexIterator < networks.length; networkIndexIterator++)
+    networkDict[networks[networkIndexIterator].name] = networks[networkIndexIterator];
 
 })();
