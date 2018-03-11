@@ -1,2 +1,26 @@
-./src/cat.sh 
-mv src/bip39all.js dist/bip39lib.js
+cat \
+src/polyfill.es6.js \
+src/basex.js \
+src/unorm.js \
+src/levenshtein.js \
+src/kjua-0.1.1.min.js \
+src/bitcoinjs-3.3.0.js \
+src/bitcoinjs-extensions.js \
+src/bitcoinjs-bip38-2.0.2.js \
+src/segwit-parameters.js \
+src/ethereumjs-util.js \
+src/ripple-util.js \
+src/sjcl-bip39.js \
+src/wordlist_english.js \
+src/wordlist_japanese.js \
+src/wordlist_spanish.js \
+src/wordlist_chinese_simplified.js \
+src/wordlist_chinese_traditional.js \
+src/wordlist_french.js \
+src/wordlist_italian.js \
+src/jsbip39.js \
+src/biginteger.js \
+src/zxcvbn.js \
+src/entropy.js \
+src/index.js \
+> dist/bip39lib.js
